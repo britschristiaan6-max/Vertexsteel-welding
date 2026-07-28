@@ -392,22 +392,33 @@ footer{background:#05090d;border-top:1px solid var(--line);padding:58px 0 34px}
 }
 @media(max-width:640px){
   /* ---- colour tokens ---- */
-  :root{
-    --chrome:linear-gradient(180deg,#ffffff 0%,#f4f9ff 20%,#c8ddef 50%,#f4f9ff 78%,#ffffff 100%);
-    --text-3:#96adc4;
-  }
+  :root{ --text-3:#96adc4; }
 
-  /* ---- fix background-clip:text on Android (needs -webkit-text-fill-color) ---- */
-  .chrome-txt,
-  .pwr .kw b,
-  .num[data-to]{
-    background:linear-gradient(180deg,#ffffff 0%,#f4f9ff 20%,#c8ddef 50%,#f4f9ff 78%,#ffffff 100%);
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-    -webkit-text-fill-color:transparent;
+  /* ---- DROP background-clip:text on mobile — unreliable on Android.
+          Use solid silver-white for all chrome/gradient headings & numbers ---- */
+  .chrome-txt{
+    background:none !important;
+    -webkit-background-clip:unset !important;
+    background-clip:unset !important;
+    -webkit-text-fill-color:#dde9f7 !important;
+    color:#dde9f7 !important;
+    filter:drop-shadow(0 1px 10px rgba(100,180,255,.28));
   }
-  /* grad text (hero span) */
+  .pwr .kw b{
+    background:none !important;
+    -webkit-background-clip:unset !important;
+    background-clip:unset !important;
+    -webkit-text-fill-color:#dde9f7 !important;
+    color:#dde9f7 !important;
+  }
+  .num[data-to]{
+    background:none !important;
+    -webkit-background-clip:unset !important;
+    background-clip:unset !important;
+    -webkit-text-fill-color:#dde9f7 !important;
+    color:#dde9f7 !important;
+  }
+  /* grad text keeps its gradient (cyan→spark) — this one usually works */
   .grad{
     background:linear-gradient(96deg,var(--cyan),var(--blue) 45%,var(--spark));
     -webkit-background-clip:text;
@@ -416,7 +427,7 @@ footer{background:#05090d;border-top:1px solid var(--line);padding:58px 0 34px}
     -webkit-text-fill-color:transparent;
   }
 
-  /* ---- rhythm: tighter section padding ---- */
+  /* ---- rhythm ---- */
   section{padding:40px 0}
   .hero{padding:30px 0 38px}
   .power{padding:26px 0}
@@ -431,7 +442,7 @@ footer{background:#05090d;border-top:1px solid var(--line);padding:58px 0 34px}
   .hero-mini{margin-top:16px;padding-top:14px;gap:8px 16px;font-size:.8rem}
   .btn{padding:12px 20px;font-size:.85rem}
 
-  /* ---- power band: 2-col, compact cards ---- */
+  /* ---- power band: 2-col, compact ---- */
   .pwr-grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .pwr{padding:18px 14px}
   .pwr h3{font-size:.95rem;margin:10px 0 6px}
@@ -444,7 +455,6 @@ footer{background:#05090d;border-top:1px solid var(--line);padding:58px 0 34px}
   .srow:last-child{margin-bottom:0}
   .shot.wide{aspect-ratio:16/9;max-height:200px}
   .shot.portrait{aspect-ratio:16/9}
-  .shot-badge{font-size:.65rem;padding:7px 12px}
 
   /* ---- before/after ---- */
   .ba-grid{gap:16px}
