@@ -391,71 +391,100 @@ footer{background:#05090d;border-top:1px solid var(--line);padding:58px 0 34px}
   .bleed .hero-cta{justify-content:center}
 }
 @media(max-width:640px){
-  /* ---- colour tokens: brighten chrome gradient so headings are legible ---- */
+  /* ---- colour tokens ---- */
   :root{
-    --chrome:linear-gradient(180deg,#ffffff 0%,#eef4fc 22%,#bdd0e2 50%,#eef4fc 76%,#ffffff 100%);
-    --text-3:#8fa3ba;
+    --chrome:linear-gradient(180deg,#ffffff 0%,#f4f9ff 20%,#c8ddef 50%,#f4f9ff 78%,#ffffff 100%);
+    --text-3:#96adc4;
   }
 
-  /* ---- rhythm: cut section padding in half so there is less dead air ---- */
-  section{padding:44px 0}
-  .hero{padding:32px 0 40px}
-  .power{padding:28px 0}
-  .sec-head{margin-bottom:24px}
-  .sec-head h2{font-size:clamp(1.55rem,7.5vw,2.2rem);margin-top:10px}
+  /* ---- fix background-clip:text on Android (needs -webkit-text-fill-color) ---- */
+  .chrome-txt,
+  .pwr .kw b,
+  .num[data-to]{
+    background:linear-gradient(180deg,#ffffff 0%,#f4f9ff 20%,#c8ddef 50%,#f4f9ff 78%,#ffffff 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+  }
+  /* grad text (hero span) */
+  .grad{
+    background:linear-gradient(96deg,var(--cyan),var(--blue) 45%,var(--spark));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    -webkit-text-fill-color:transparent;
+  }
+
+  /* ---- rhythm: tighter section padding ---- */
+  section{padding:40px 0}
+  .hero{padding:30px 0 38px}
+  .power{padding:26px 0}
+  .sec-head{margin-bottom:22px}
+  .sec-head h2{font-size:clamp(1.5rem,7.5vw,2.2rem);margin-top:10px}
+  .sec-head p{font-size:.95rem}
 
   /* ---- hero ---- */
-  .hero h1{font-size:clamp(2rem,10vw,3.2rem)}
-  .hero p.lede{font-size:.95rem;margin-top:14px;max-width:100%}
-  .hero-cta{gap:10px;margin-top:20px}
-  .hero-mini{margin-top:18px;padding-top:16px;gap:8px 18px;font-size:.82rem}
-  .btn{padding:13px 20px;font-size:.86rem}
+  .hero h1{font-size:clamp(1.95rem,10vw,3.2rem)}
+  .hero p.lede{font-size:.93rem;margin-top:14px;max-width:100%}
+  .hero-cta{gap:10px;margin-top:18px}
+  .hero-mini{margin-top:16px;padding-top:14px;gap:8px 16px;font-size:.8rem}
+  .btn{padding:12px 20px;font-size:.85rem}
 
-  /* ---- power band: stay 2-col, compact cards ---- */
+  /* ---- power band: 2-col, compact cards ---- */
   .pwr-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .pwr{padding:20px 16px}
-  .pwr h3{font-size:.98rem;margin:12px 0 6px}
-  .pwr p{font-size:.82rem}
-  .pwr .kw b{font-size:clamp(2rem,9vw,3rem)}
+  .pwr{padding:18px 14px}
+  .pwr h3{font-size:.95rem;margin:10px 0 6px}
+  .pwr p{font-size:.8rem;color:var(--text-3)}
+  .pwr .kw b{font-size:clamp(1.9rem,9vw,2.8rem)}
+  .pwr .kw span{font-size:1.1rem}
 
-  /* ---- services: shorter image, tighter text ---- */
-  .srow{gap:14px;margin-bottom:36px}
+  /* ---- services ---- */
+  .srow{gap:14px;margin-bottom:32px}
   .srow:last-child{margin-bottom:0}
-  .shot.wide{aspect-ratio:16/9;max-height:210px}
+  .shot.wide{aspect-ratio:16/9;max-height:200px}
   .shot.portrait{aspect-ratio:16/9}
+  .shot-badge{font-size:.65rem;padding:7px 12px}
 
-  /* ---- before/after grid ---- */
-  .ba-grid{gap:18px}
+  /* ---- before/after ---- */
+  .ba-grid{gap:16px}
 
-  /* ---- stats: keep 2-col ---- */
+  /* ---- stats: 2-col, compact ---- */
   .stats{grid-template-columns:repeat(2,1fr);gap:12px}
-  .stat{padding:22px 14px}
+  .stat{padding:20px 12px}
+  .num[data-to]{font-size:clamp(1.7rem,9vw,2.6rem)}
+  .cap{font-size:.8rem;margin-top:8px}
 
-  /* ---- materials: keep 2-col ---- */
+  /* ---- materials: 2-col ---- */
   .mat-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .mat{padding:18px 14px}
-  .mat .swatch{height:46px;margin-bottom:12px}
+  .mat{padding:16px 12px}
+  .mat .swatch{height:44px;margin-bottom:10px}
+  .mat h4{font-size:.95rem}
+  .mat p{font-size:.8rem}
 
-  /* ---- process steps: keep 2-col ---- */
+  /* ---- process steps: 2-col ---- */
   .steps{grid-template-columns:repeat(2,1fr);gap:12px}
-  .step{padding:20px 16px}
-  .step .n{width:36px;height:36px;font-size:.8rem;margin-bottom:12px}
+  .step{padding:18px 14px}
+  .step .n{width:34px;height:34px;font-size:.78rem;margin-bottom:10px}
+  .step h4{font-size:.95rem}
+  .step p{font-size:.8rem}
 
   /* ---- gallery: 2-col ---- */
-  .gal{grid-template-columns:repeat(2,1fr);gap:12px}
+  .gal{grid-template-columns:repeat(2,1fr);gap:10px}
 
-  /* ---- vs / checklist ---- */
-  .vs li{padding:12px 14px}
-  .vs .tick{width:20px;height:20px;font-size:.75rem}
+  /* ---- checklist ---- */
+  .vs li{padding:11px 12px}
+  .vs .t{font-size:.9rem}
+  .vs .d{font-size:.8rem}
 
   /* ---- footer ---- */
   .f-grid{grid-template-columns:1fr}
   .frow{grid-template-columns:1fr}
 
   /* ---- nav / topbar ---- */
-  .topbar .wrap{height:auto;padding-top:9px;padding-bottom:9px;flex-wrap:wrap;gap:8px;font-size:.71rem}
-  .bar{height:68px}
-  .mark img.brandlogo{height:34px}
+  .topbar .wrap{height:auto;padding-top:8px;padding-bottom:8px;flex-wrap:wrap;gap:7px;font-size:.7rem}
+  .bar{height:66px}
+  .mark img.brandlogo{height:33px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
