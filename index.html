@@ -231,8 +231,7 @@ section{padding:clamp(58px,8vw,116px) 0;position:relative}
 .ba .layer img{position:absolute;top:0;left:0;height:100%;width:100%;object-fit:cover;pointer-events:none;display:block}
 /* AFTER sits underneath, full width. BEFORE sits on top and its WIDTH is what we shrink. */
 .ba .after{z-index:1}
-.ba .before{z-index:2;width:50%;overflow:hidden}
-.ba .before img{width:auto;height:100%}
+.ba .before{z-index:2;width:100%}
 /* the before image must stay the same visual size as the after image, so pin it to the container width */
 .ba .lbl{position:absolute;bottom:16px;font-family:"IBM Plex Mono",monospace;font-size:.62rem;
   letter-spacing:.17em;text-transform:uppercase;background:rgba(8,13,18,.86);color:var(--text-2);
@@ -804,16 +803,13 @@ footer{background:#05090d;border-top:1px solid var(--line);padding:58px 0 34px}
         beforeImg = document.getElementById('baBeforeImg'),
         handle = document.getElementById('baHandle'),
         dragging = false, pct = .5;
-    function sizeImg(){ if(beforeImg) beforeImg.style.width = ba.clientWidth + 'px'; }
     function apply(){
-      before.style.width = (pct*100) + '%';
+      before.style.clipPath = 'inset(0 ' + ((1-pct)*100) + '% 0 0)';
       handle.style.left  = (pct*100) + '%';
     }
     function setPos(x){ var r = ba.getBoundingClientRect();
       pct = Math.max(0, Math.min(1, (x - r.left) / r.width)); apply(); }
-    sizeImg(); apply();
-    addEventListener('resize', sizeImg);
-    if(beforeImg && !beforeImg.complete) beforeImg.addEventListener('load', sizeImg);
+    apply();
     ba.addEventListener('pointerdown', function(e){ dragging = true; ba.setPointerCapture(e.pointerId); setPos(e.clientX); });
     ba.addEventListener('pointermove', function(e){ if(dragging) setPos(e.clientX); });
     ba.addEventListener('pointerup', function(){ dragging = false; });
