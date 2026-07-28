@@ -231,7 +231,8 @@ section{padding:clamp(58px,8vw,116px) 0;position:relative}
 .ba .layer img{position:absolute;top:0;left:0;height:100%;width:100%;object-fit:cover;pointer-events:none;display:block}
 /* AFTER sits underneath, full width. BEFORE sits on top and its WIDTH is what we shrink. */
 .ba .after{z-index:1}
-.ba .before{z-index:2;width:100%}
+.ba .before{z-index:2;width:50%;overflow:hidden}
+.ba .before img{position:absolute;top:0;left:0;height:100%;width:var(--ba-full-w,100%);max-width:none;object-fit:cover;pointer-events:none;display:block}
 /* the before image must stay the same visual size as the after image, so pin it to the container width */
 .ba .lbl{position:absolute;bottom:16px;font-family:"IBM Plex Mono",monospace;font-size:.62rem;
   letter-spacing:.17em;text-transform:uppercase;background:rgba(8,13,18,.86);color:var(--text-2);
@@ -383,13 +384,78 @@ footer{background:#05090d;border-top:1px solid var(--line);padding:58px 0 34px}
   .stats{grid-template-columns:repeat(2,1fr)}
   .navlinks{display:none}.burger{display:block}
   .f-grid{grid-template-columns:1fr 1fr}
-  .bleed::after{background:linear-gradient(180deg,rgba(6,10,14,.6),rgba(6,10,14,.95))}
+  /* bleed overlay: keep centre readable on portrait */
+  .bleed::after{background:linear-gradient(180deg,rgba(6,10,14,.85) 0%,rgba(6,10,14,.55) 45%,rgba(6,10,14,.9) 100%)}
+  .bleed .wrap{text-align:center}
+  .bleed h2,.bleed p{max-width:100%}
+  .bleed .hero-cta{justify-content:center}
 }
 @media(max-width:640px){
-  .pwr-grid,.steps,.gal,.f-grid{grid-template-columns:1fr}
+  /* ---- colour tokens: brighten chrome gradient so headings are legible ---- */
+  :root{
+    --chrome:linear-gradient(180deg,#ffffff 0%,#eef4fc 22%,#bdd0e2 50%,#eef4fc 76%,#ffffff 100%);
+    --text-3:#8fa3ba;
+  }
+
+  /* ---- rhythm: cut section padding in half so there is less dead air ---- */
+  section{padding:44px 0}
+  .hero{padding:32px 0 40px}
+  .power{padding:28px 0}
+  .sec-head{margin-bottom:24px}
+  .sec-head h2{font-size:clamp(1.55rem,7.5vw,2.2rem);margin-top:10px}
+
+  /* ---- hero ---- */
+  .hero h1{font-size:clamp(2rem,10vw,3.2rem)}
+  .hero p.lede{font-size:.95rem;margin-top:14px;max-width:100%}
+  .hero-cta{gap:10px;margin-top:20px}
+  .hero-mini{margin-top:18px;padding-top:16px;gap:8px 18px;font-size:.82rem}
+  .btn{padding:13px 20px;font-size:.86rem}
+
+  /* ---- power band: stay 2-col, compact cards ---- */
+  .pwr-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .pwr{padding:20px 16px}
+  .pwr h3{font-size:.98rem;margin:12px 0 6px}
+  .pwr p{font-size:.82rem}
+  .pwr .kw b{font-size:clamp(2rem,9vw,3rem)}
+
+  /* ---- services: shorter image, tighter text ---- */
+  .srow{gap:14px;margin-bottom:36px}
+  .srow:last-child{margin-bottom:0}
+  .shot.wide{aspect-ratio:16/9;max-height:210px}
+  .shot.portrait{aspect-ratio:16/9}
+
+  /* ---- before/after grid ---- */
+  .ba-grid{gap:18px}
+
+  /* ---- stats: keep 2-col ---- */
+  .stats{grid-template-columns:repeat(2,1fr);gap:12px}
+  .stat{padding:22px 14px}
+
+  /* ---- materials: keep 2-col ---- */
+  .mat-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .mat{padding:18px 14px}
+  .mat .swatch{height:46px;margin-bottom:12px}
+
+  /* ---- process steps: keep 2-col ---- */
+  .steps{grid-template-columns:repeat(2,1fr);gap:12px}
+  .step{padding:20px 16px}
+  .step .n{width:36px;height:36px;font-size:.8rem;margin-bottom:12px}
+
+  /* ---- gallery: 2-col ---- */
+  .gal{grid-template-columns:repeat(2,1fr);gap:12px}
+
+  /* ---- vs / checklist ---- */
+  .vs li{padding:12px 14px}
+  .vs .tick{width:20px;height:20px;font-size:.75rem}
+
+  /* ---- footer ---- */
+  .f-grid{grid-template-columns:1fr}
   .frow{grid-template-columns:1fr}
+
+  /* ---- nav / topbar ---- */
   .topbar .wrap{height:auto;padding-top:9px;padding-bottom:9px;flex-wrap:wrap;gap:8px;font-size:.71rem}
-  .bar{height:70px}.mark img{height:36px}
+  .bar{height:68px}
+  .mark img.brandlogo{height:34px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -803,13 +869,20 @@ footer{background:#05090d;border-top:1px solid var(--line);padding:58px 0 34px}
         beforeImg = document.getElementById('baBeforeImg'),
         handle = document.getElementById('baHandle'),
         dragging = false, pct = .5;
+    function sizeImg(){
+      var w = ba.getBoundingClientRect().width;
+      if(w > 0) ba.style.setProperty('--ba-full-w', w + 'px');
+    }
     function apply(){
-      before.style.clipPath = 'inset(0 ' + ((1-pct)*100) + '% 0 0)';
+      before.style.width = (pct*100) + '%';
       handle.style.left  = (pct*100) + '%';
     }
     function setPos(x){ var r = ba.getBoundingClientRect();
       pct = Math.max(0, Math.min(1, (x - r.left) / r.width)); apply(); }
-    apply();
+    sizeImg(); apply();
+    requestAnimationFrame(function(){ sizeImg(); apply(); });
+    addEventListener('load', sizeImg);
+    addEventListener('resize', sizeImg);
     ba.addEventListener('pointerdown', function(e){ dragging = true; ba.setPointerCapture(e.pointerId); setPos(e.clientX); });
     ba.addEventListener('pointermove', function(e){ if(dragging) setPos(e.clientX); });
     ba.addEventListener('pointerup', function(){ dragging = false; });
